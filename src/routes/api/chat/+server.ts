@@ -17,22 +17,27 @@ export const POST: RequestHandler = async ({ request }) => {
 
 		const requestData = await request.json()
 
+		console.log('requestData:', requestData)
+	
 		if (!requestData) {
 			throw new Error('No request data')
 		}
-
+	
 		const reqMessages: ChatCompletionRequestMessage[] = requestData.messages
-
+	
+		console.log('reqMessages:', reqMessages)
+	
 		if (!reqMessages) {
 			throw new Error('no messages provided')
 		}
-
+	
 		let tokenCount = 0
-
+	
 		reqMessages.forEach((msg) => {
 			const tokens = getTokens(msg.content)
 			tokenCount += tokens
 		})
+	
 
 		const moderationRes = await fetch('https://api.openai.com/v1/moderations', {
 			headers: {
